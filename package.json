@@ -10,8 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "esm": "^3.2.25",
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-native": "0.61.5",
+    "react-native-elements": "^1.2.7"
   },
   "devDependencies": {
     "@babel/core": "7.8.3",
@@ -25,5 +27,6 @@
   },
   "jest": {
     "preset": "react-native"
+  
   }
 }

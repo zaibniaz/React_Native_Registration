@@ -1,43 +1,33 @@
 import React, {Component} from 'react';
+import {StyleSheet, View, TextInput, ScrollView} from 'react-native';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TextInput,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+const InputField = props => {
+  //CallBack to Parent Class with params text on changed
+  const onChangeText = text => props.onChangeText(text);
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-
-class InpuField extends Component {
-  render() {
-    const {value} = this.props;
-    return (
-      <View>
-        <TextInput
-          style={styles.textInput}
-          placeholder={value}
-          placeholderTextColor="#7a42f4"
-        />
-      </View>
-    );
-  }
-}
+  return (
+    <View>
+      <TextInput
+        secureTextEntry={props.issecureText == 'true' ? true : false}
+        textContentType={props.type == 'email' ? 'emailAddress' : 'password'}
+        style={styles.textInput}
+        placeholder={props.hint}
+        placeholderTextColor="grey"
+        onChangeText={text => onChangeText(text)}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   textInput: {
     padding: 10,
     borderRadius: 10,
-    borderColor: '#7a42f4',
+    borderColor: 'grey',
     borderWidth: 1,
     margin: 10,
     height: 50,
-    backgroundColor: Colors.white,
   },
 });
 
-export default InpuField;
+export default InputField;

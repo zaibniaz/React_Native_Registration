@@ -7,22 +7,19 @@
  */
 
 import React from 'react';
-
-import {
-  View,
-} from 'react-native';
-
+import {View, SafeAreaView, StatusBar} from 'react-native';
 
 import Login from './src/views/Login';
 
 const App: () => React$Node = () => {
   return (
     <View>
-    <Login/>
+      <StatusBar barStyle="light-content" />
+      <SafeAreaView>
+      <Login />
+      </SafeAreaView>
     </View>
   );
 };
-
-
 
 export default App;
