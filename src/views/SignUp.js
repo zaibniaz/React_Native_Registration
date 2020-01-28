@@ -24,9 +24,10 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import InputField from '../components/InputField';
 
 type Props = {};
-class LogIn extends Component<Props> {
-  static navigationOptions = {
-    headerShown: false,
+class SignUp extends Component<Props> {
+
+ static navigationOptions = {
+   headerShown: false ,
   };
 
   constructor() {
@@ -36,6 +37,10 @@ class LogIn extends Component<Props> {
       password: '',
     };
   }
+
+  navigateToLogIn = () => {
+    this.props.navigation.navigate('LogIn');
+  };
 
   handleEmailChange(text) {
     this.setState({
@@ -49,11 +54,7 @@ class LogIn extends Component<Props> {
     });
   }
 
-  navigateToSignUp = () => {
-    this.props.navigation.navigate('SignUp');
-  };
-
-  logIn = () => {
+  LogIn = () => {
     const {email, password} = this.state;
     try {
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -91,6 +92,13 @@ class LogIn extends Component<Props> {
             </View>
             <View style={styles.lowerPortion}>
               <InputField
+                type="fullName"
+                hint="Full Name"
+                issecureText="false"
+                onChangeText={text => this.handleEmailChange(text)}
+              />
+
+              <InputField
                 type="email"
                 hint="email"
                 issecureText="false"
@@ -102,13 +110,13 @@ class LogIn extends Component<Props> {
                 issecureText="true"
                 onChangeText={text => this.handlePasswordChange(text)}
               />
-              <TouchableOpacity style={styles.buttonStyle} onPress={this.logIn}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={this.LogIn}>
                 <Text style={styles.signInText}>Sign In</Text>
               </TouchableOpacity>
               <View style={styles.signUpViewContainer}>
-                <Text style={styles.messageText}>Don't have an acount?</Text>
-                <TouchableOpacity onPress={this.navigateToSignUp}>
-                  <Text style={styles.signUpText}>Sign Up</Text>
+                <Text style={styles.messageText}>Already have an acount?</Text>
+                <TouchableOpacity onPress={this.navigateToLogIn}>
+                  <Text style={styles.signUpText}>Log In</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -121,7 +129,7 @@ class LogIn extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
+     flexDirection: 'column',
     height: '100%',
   },
 
@@ -195,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogIn;
+export default SignUp;
