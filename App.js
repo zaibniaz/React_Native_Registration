@@ -7,19 +7,19 @@
  */
 
 import React from 'react';
-import {View, SafeAreaView, StatusBar} from 'react-native';
+import {View} from 'react-native';
 
-import Login from './src/views/Login';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
-const App: () => React$Node = () => {
-  return (
-    <View>
-      <StatusBar barStyle="light-content" />
-      <SafeAreaView>
-      <Login />
-      </SafeAreaView>
-    </View>
-  );
-};
+import LogIn from './src/views/LogIn';
+import SignUp from './src/views/SignUp';
+
+const AppNavigator = createStackNavigator({
+  LogIn: {screen: LogIn},
+  SignUp: {screen: SignUp},
+});
+
+const App = createAppContainer(AppNavigator);
 
 export default App;
