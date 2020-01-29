@@ -8,9 +8,12 @@ const InputField = props => {
   return (
     <View>
       <TextInput
+        style={
+          props.showError == 'true' ? styles.errorField : styles.textInput
+          
+        }
         secureTextEntry={props.issecureText == 'true' ? true : false}
         textContentType={props.type == 'email' ? 'emailAddress' : 'password'}
-        style={styles.textInput}
         placeholder={props.hint}
         placeholderTextColor="grey"
         onChangeText={text => onChangeText(text)}
@@ -24,6 +27,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderColor: 'grey',
+    borderWidth: 1,
+    margin: 10,
+    height: 50,
+  },
+  errorField: {
+    padding: 10,
+    borderRadius: 10,
+    borderColor: 'red',
     borderWidth: 1,
     margin: 10,
     height: 50,

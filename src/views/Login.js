@@ -20,6 +20,9 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Snackbar} from 'react-native-paper';
+
+import Helper from '../utils/Helper';
 
 import InputField from '../components/InputField';
 
@@ -34,8 +37,35 @@ class LogIn extends Component<Props> {
     this.state = {
       email: '',
       password: '',
+      errorForInvalidEmail: 'false',
+      errorForInvalidPassword: 'false',
     };
   }
+
+  logIn = () => {
+    const {email, password} = this.state;
+
+    this.setState({
+      //Validating Email From Helper Class and notifying state
+      errorForInvalidEmail: Helper.isEmailValid(email) ? 'true' : 'false',
+      //Validating PAssword From Helper Class and notifying state
+      errorForInvalidPassword: Helper.isPasswordValid(password)
+        ? 'true'
+        : 'false',
+    });
+    if (
+      !this.state.errorForInvalidEmail &&
+      !this.state.errorForInvalidPassword
+    ) {
+      alert(
+        'Email is =' +
+          this.state.errorForInvalidEmail +
+          '\n' +
+          'Password is =' +
+          this.state.errorForInvalidPassword,
+      );
+    }
+  };
 
   handleEmailChange(text) {
     this.setState({
@@ -53,67 +83,46 @@ class LogIn extends Component<Props> {
     this.props.navigation.navigate('SignUp');
   };
 
-  logIn = () => {
-    const {email, password} = this.state;
-    try {
-      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      if (reg.test(email) === false) {
-        alert('Email is Not Correct');
-        return false;
-      } else if (reg.test(email) === true) {
-        alert('Email is Correct');
-      }
-      if (password.length < 8) {
-        alert('Pasword is Not Valid');
-        return false;
-      } else {
-        alert('Pasword is Correct');
-      }
-    } catch (error) {
-      alert(error);
-    }
-  };
-
   render() {
     return (
-      <View>
-        <View style={styles.container}>
-          <ScrollView
-            contentContainerStyle={{flexGrow: 1}}
-            keyboardShouldPersistTaps="always">
-            <View style={styles.upperPortion}>
-              <Image
-                style={styles.logo}
-                source={require('../assets/images/ic_launcher_round.png')}
-              />
-              <Text style={styles.heading}>Amplifyd</Text>
-              <Text style={styles.description}>Let’s Get You Connected</Text>
-            </View>
-            <View style={styles.lowerPortion}>
-              <InputField
-                type="email"
-                hint="email"
-                issecureText="false"
-                onChangeText={text => this.handleEmailChange(text)}
-              />
-              <InputField
-                type="password"
-                hint="pasword"
-                issecureText="true"
-                onChangeText={text => this.handlePasswordChange(text)}
-              />
-              <TouchableOpacity style={styles.buttonStyle} onPress={this.logIn}>
-                <Text style={styles.signInText}>Sign In</Text>
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          keyboardShouldPersistTaps="always">
+          <View style={styles.upperPortion}>
+            <Image
+              style={styles.logo}
+              source={require('../assets/images/ic_launcher_round.png')}
+            />
+            <Text style={styles.heading}>Amplifyd</Text>
+            <Text style={styles.description}>Let’s Get You Connected</Text>
+          </View>
+          <View style={styles.lowerPortion}>
+            <InputField
+              showError={this.state.errorForInvalidEmail}
+              type="email"
+              hint="email"
+              issecureText="false"
+              onChangeText={text => this.handleEmailChange(text)}
+            />
+            <InputField
+              showError={this.state.errorForInvalidPassword}
+              type="password"
+              hint="pasword"
+              issecureText="true"
+              onChangeText={text => this.handlePasswordChange(text)}
+            />
+            <TouchableOpacity style={styles.buttonStyle} onPress={this.logIn}>
+              <Text style={styles.signInText}>Sign In</Text>
+            </TouchableOpacity>
+            <View style={styles.signUpViewContainer}>
+              <Text style={styles.messageText}>Don't have an acount?</Text>
+              <TouchableOpacity onPress={this.navigateToSignUp}>
+                <Text style={styles.signUpText}>Sign Up</Text>
               </TouchableOpacity>
-              <View style={styles.signUpViewContainer}>
-                <Text style={styles.messageText}>Don't have an acount?</Text>
-                <TouchableOpacity onPress={this.navigateToSignUp}>
-                  <Text style={styles.signUpText}>Sign Up</Text>
-                </TouchableOpacity>
-              </View>
             </View>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -122,12 +131,12 @@ class LogIn extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    height: '100%',
+    flex: 1,
   },
 
   upperPortion: {
     alignSelf: 'center',
-    height: '50%',
+    flex: 0.5,
     width: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -153,11 +162,9 @@ const styles = StyleSheet.create({
   lowerPortion: {
     flexDirection: 'column',
     width: '100%',
-    height: '50%',
+    flex: 0.5,
   },
-  inputFieldError: {
-    borderColor: 'red',
-  },
+
   buttonStyle: {
     marginTop: '3%',
     padding: 10,
@@ -186,7 +193,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   signUpText: {
-    marginRight: '7%',
+    marginRight: '5%',
     alignSelf: 'center',
     fontSize: 20,
     fontFamily: 'sfui_text_bold',
