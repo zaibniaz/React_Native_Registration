@@ -1,3 +1,5 @@
+import {Snackbar} from 'react-native-paper';
+
 const Helper = {
   isPasswordValid: function(text) {
     try {
@@ -48,9 +50,21 @@ const Helper = {
       return false;
     }
   },
-
   isEmpty: function(str) {
     return !str || /^\s*$/.test(str);
+  },
+  showSnackBar: function(message) {
+    <Snackbar
+      visible={this.state.visible}
+      onDismiss={() => this.setState({visible: false})}
+      action={{
+        label: 'Undo',
+        onPress: () => {
+          // Do something
+        },
+      }}>
+      message
+    </Snackbar>;
   },
 };
 

@@ -20,11 +20,12 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Snackbar} from 'react-native-paper';
 
 import Helper from '../utils/Helper';
 
 import InputField from '../components/InputField';
+
+
 
 type Props = {};
 class LogIn extends Component<Props> {
@@ -39,6 +40,7 @@ class LogIn extends Component<Props> {
       password: '',
       errorForInvalidEmail: 'false',
       errorForInvalidPassword: 'false',
+     
     };
   }
 
@@ -112,6 +114,8 @@ class LogIn extends Component<Props> {
               issecureText="true"
               onChangeText={text => this.handlePasswordChange(text)}
             />
+         
+
             <TouchableOpacity style={styles.buttonStyle} onPress={this.logIn}>
               <Text style={styles.signInText}>Sign In</Text>
             </TouchableOpacity>

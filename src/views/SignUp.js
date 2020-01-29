@@ -24,6 +24,9 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import InputField from '../components/InputField';
 import Helper from '../utils/Helper';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
+
 type Props = {};
 class SignUp extends Component<Props> {
   static navigationOptions = {
@@ -39,8 +42,28 @@ class SignUp extends Component<Props> {
       errorForInvalidfullName: 'false',
       errorForInvalidEmail: 'false',
       errorForInvalidPassword: 'false',
+      date: new Date('2020-06-12T14:42:42'),
+      show: false,
     };
   }
+
+  setDate = (event, date) => {
+    date = date || this.state.date;
+
+    this.setState({
+      show: Platform.OS === 'ios' ? true : false,
+      date,
+    });
+  };
+
+  datepicker = () => {
+    this.show('date');
+  };
+  show = () => {
+    this.setState({
+      show: true,
+    });
+  };
 
   navigateToLogIn = () => {
     this.props.navigation.navigate('LogIn');
@@ -133,12 +156,31 @@ class SignUp extends Component<Props> {
               issecureText="true"
               onChangeText={text => this.handlePasswordChange(text)}
             />
+            <View>
+              <Button onPress={this.datepicker} title={'Show date picker!'} />
+
+              <Text style={styles.description}>
+                {moment.utc(this.state.date).format('MM/DD/YYYY')}
+              </Text>
+            </View>
+
+            {this.state.show && (
+              <DateTimePicker
+                value={this.state.date}
+                mode={'date'}
+                is24Hour={true}
+                display="default"
+                onChange={this.setDate}
+              />
+            )}
 
             <TouchableOpacity style={styles.buttonStyle} onPress={this.LogIn}>
               <Text style={styles.signInText}>Sign Up</Text>
             </TouchableOpacity>
+
             <View style={styles.signUpViewContainer}>
               <Text style={styles.messageText}>Already have an acount?</Text>
+
               <TouchableOpacity onPress={this.navigateToLogIn}>
                 <Text style={styles.signUpText}>Log In</Text>
               </TouchableOpacity>
@@ -184,6 +226,7 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   lowerPortion: {
+    marginBottom: 10,
     flexDirection: 'column',
   },
   inputFieldError: {
