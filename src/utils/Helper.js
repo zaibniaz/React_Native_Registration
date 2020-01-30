@@ -1,7 +1,7 @@
 import {Snackbar} from 'react-native-paper';
 
 const Helper = {
-  isPasswordValid: function(text) {
+  isPasswordNotValid: function(text) {
     try {
       if (!Helper.isEmpty(text)) {
         if (text.length < 8) {
@@ -17,7 +17,7 @@ const Helper = {
       return false;
     }
   },
-  isEmailValid: function(text) {
+  isEmailNotValid: function(text) {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     try {
       if (!Helper.isEmpty(text)) {

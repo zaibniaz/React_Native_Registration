@@ -29,10 +29,6 @@ import moment from 'moment';
 
 type Props = {};
 class SignUp extends Component<Props> {
-  static navigationOptions = {
-    headerShown: false,
-  };
-
   constructor() {
     super();
     this.state = {
@@ -139,14 +135,14 @@ class SignUp extends Component<Props> {
               type="fullName"
               hint="Full Name"
               issecureText="false"
-              onChangeText={text => this.handleFullNameChange(text)}
+              onChangeText={text => this.handleFullNameChange.bind(text)}
             />
             <InputField
               showError={this.state.errorForInvalidEmail}
               type="email"
               hint="email"
               issecureText="false"
-              onChangeText={text => this.handleEmailChange(text)}
+              onChangeText={text => this.handleEmailChange.bind(text)}
             />
 
             <InputField
@@ -154,7 +150,7 @@ class SignUp extends Component<Props> {
               type="password"
               hint="pasword"
               issecureText="true"
-              onChangeText={text => this.handlePasswordChange(text)}
+              onChangeText={text => this.handlePasswordChange.bind(text)}
             />
             <View>
               <Button onPress={this.datepicker} title={'Show date picker!'} />
@@ -174,7 +170,9 @@ class SignUp extends Component<Props> {
               />
             )}
 
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.LogIn}>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={this.LogIn.bind(this)}>
               <Text style={styles.signInText}>Sign Up</Text>
             </TouchableOpacity>
 

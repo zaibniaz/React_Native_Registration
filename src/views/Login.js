@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 
 import {
   StyleSheet,
@@ -25,113 +25,90 @@ import Helper from '../utils/Helper';
 
 import InputField from '../components/InputField';
 
+const LogIn = props => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorForInvalidEmail, seterrorForInvalidEmail] = useState('false');
+  const [errorForInvalidPassword, seterrorForInvalidPassword] = useState(
+    'false',
+  );
 
+  const logIn = () => {
+    //Validating Email From Helper Class and notifying state
+    seterrorForInvalidEmail(Helper.isEmailNotValid(email) ? 'true' : 'false');
+    //Validating PAssword From Helper Class and notifying state
+    seterrorForInvalidPassword(
+      Helper.isPasswordNotValid(password) ? 'true' : 'false',
+    );
 
-type Props = {};
-class LogIn extends Component<Props> {
-  static navigationOptions = {
-    headerShown: false,
-  };
-
-  constructor() {
-    super();
-    this.state = {
-      email: '',
-      password: '',
-      errorForInvalidEmail: 'false',
-      errorForInvalidPassword: 'false',
-     
-    };
-  }
-
-  logIn = () => {
-    const {email, password} = this.state;
-
-    this.setState({
-      //Validating Email From Helper Class and notifying state
-      errorForInvalidEmail: Helper.isEmailValid(email) ? 'true' : 'false',
-      //Validating PAssword From Helper Class and notifying state
-      errorForInvalidPassword: Helper.isPasswordValid(password)
-        ? 'true'
-        : 'false',
-    });
-    if (
-      !this.state.errorForInvalidEmail &&
-      !this.state.errorForInvalidPassword
-    ) {
+    if (!errorForInvalidEmail && !errorForInvalidPassword) {
       alert(
         'Email is =' +
-          this.state.errorForInvalidEmail +
+          errorForInvalidEmail +
           '\n' +
           'Password is =' +
-          this.state.errorForInvalidPassword,
+          errorForInvalidPassword,
       );
     }
   };
 
-  handleEmailChange(text) {
-    this.setState({
-      email: text,
-    });
-  }
-
-  handlePasswordChange(text) {
-    this.setState({
-      password: text,
-    });
-  }
-
-  navigateToSignUp = () => {
-    this.props.navigation.navigate('SignUp');
+  const handleEmailChange = text => {
+    setEmail(text);
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={{flexGrow: 1}}
-          keyboardShouldPersistTaps="always">
-          <View style={styles.upperPortion}>
-            <Image
-              style={styles.logo}
-              source={require('../assets/images/ic_launcher_round.png')}
-            />
-            <Text style={styles.heading}>Amplifyd</Text>
-            <Text style={styles.description}>Let’s Get You Connected</Text>
-          </View>
-          <View style={styles.lowerPortion}>
-            <InputField
-              showError={this.state.errorForInvalidEmail}
-              type="email"
-              hint="email"
-              issecureText="false"
-              onChangeText={text => this.handleEmailChange(text)}
-            />
-            <InputField
-              showError={this.state.errorForInvalidPassword}
-              type="password"
-              hint="pasword"
-              issecureText="true"
-              onChangeText={text => this.handlePasswordChange(text)}
-            />
-         
+  const handlePasswordChange = text => {
+    setPassword(text);
+  };
 
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.logIn}>
-              <Text style={styles.signInText}>Sign In</Text>
+  navigateToSignUp = () => {
+    props.navigation.navigate('SignUp');
+  };
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{flexGrow: 1}}
+        keyboardShouldPersistTaps="always">
+        <View style={styles.upperPortion}>
+          <Image
+            style={styles.logo}
+            source={require('../assets/images/ic_launcher_round.png')}
+          />
+          <Text style={styles.heading}>Amplifyd</Text>
+          <Text style={styles.description}>Let’s Get You Connected</Text>
+        </View>
+        <View style={styles.lowerPortion}>
+          <InputField
+            showError={errorForInvalidEmail}
+            type="email"
+            hint="email"
+            issecureText="false"
+            onChangeText={text => handleEmailChange(text)}
+          />
+          <InputField
+            showError={errorForInvalidPassword}
+            type="password"
+            hint="pasword"
+            issecureText="true"
+            onChangeText={text => handlePasswordChange(text)}
+          />
+
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={logIn.bind(this)}>
+            <Text style={styles.signInText}>Sign In</Text>
+          </TouchableOpacity>
+          <View style={styles.signUpViewContainer}>
+            <Text style={styles.messageText}>Don't have an acount?</Text>
+            <TouchableOpacity onPress={navigateToSignUp}>
+              <Text style={styles.signUpText}>Sign Up</Text>
             </TouchableOpacity>
-            <View style={styles.signUpViewContainer}>
-              <Text style={styles.messageText}>Don't have an acount?</Text>
-              <TouchableOpacity onPress={this.navigateToSignUp}>
-                <Text style={styles.signUpText}>Sign Up</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </ScrollView>
-      </View>
-    );
-  }
-}
-
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
