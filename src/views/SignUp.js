@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 
 import {
   StyleSheet,
@@ -22,175 +22,151 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import InputField from '../components/InputField';
+
+import CustomButton from '../components/CustomButton';
+
 import Helper from '../utils/Helper';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import moment from 'moment';
 
-type Props = {};
-class SignUp extends Component<Props> {
-  static navigationOptions = {
-    headerShown: false,
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const SignUp = props => {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorForInvalidfullName, setErrorForInvalidfullName] = useState(
+    'false',
+  );
+  const [errorForInvalidEmail, setErrorForInvalidEmail] = useState('false');
+  const [errorForInvalidPassword, setErrorForInvalidPassword] = useState(
+    'false',
+  );
+  const [isSelected, setIsSelected] = useState(true);
+
+  const navigateToLogIn = () => {
+    props.navigation.navigate('LogIn');
   };
 
-  constructor() {
-    super();
-    this.state = {
-      fullName: '',
-      email: '',
-      password: '',
-      errorForInvalidfullName: 'false',
-      errorForInvalidEmail: 'false',
-      errorForInvalidPassword: 'false',
-      date: new Date('2020-06-12T14:42:42'),
-      show: false,
-    };
-  }
-
-  setDate = (event, date) => {
-    date = date || this.state.date;
-
-    this.setState({
-      show: Platform.OS === 'ios' ? true : false,
-      date,
-    });
+  const handleEmailChange = text => {
+    setEmail(text);
   };
 
-  datepicker = () => {
-    this.show('date');
-  };
-  show = () => {
-    this.setState({
-      show: true,
-    });
+  const changeGender = value => {
+    setIsSelected(value);
   };
 
-  navigateToLogIn = () => {
-    this.props.navigation.navigate('LogIn');
+  const handlePasswordChange = text => {
+    setPassword(text);
   };
 
-  handleEmailChange(text) {
-    this.setState({
-      email: text,
-    });
-  }
+  const handleFullNameChange = (text) => {
+    setFullName(text);
+  };
 
-  handlePasswordChange(text) {
-    this.setState({
-      password: text,
-    });
-  }
-
-  handleFullNameChange(text) {
-    this.setState({
-      fullName: text,
-    });
-  }
-
-  LogIn = () => {
-    const {fullName, email, password} = this.state;
-
-    this.setState({
-      //Validating Name From Helper Class and notifying state
-      errorForInvalidfullName: Helper.isNameValid(fullName) ? 'true' : 'false',
-      //Validating Email From Helper Class and notifying state
-      errorForInvalidEmail: Helper.isEmailValid(email) ? 'true' : 'false',
-      //Validating PAssword From Helper Class and notifying state
-      errorForInvalidPassword: Helper.isPasswordValid(password)
-        ? 'true'
-        : 'false',
-    });
+  const makeSignUp = () => {
+    //Validating Name From Helper Class and notifying state
+    setErrorForInvalidfullName(Helper.isNameValid(fullName) ? 'true' : 'false');
+    //Validating Email From Helper Class and notifying state
+    setErrorForInvalidEmail(Helper.isEmailNotValid(email) ? 'true' : 'false');
+    //Validating PAssword From Helper Class and notifying state
+    setErrorForInvalidPassword(
+      Helper.isPasswordNotValid(password) ? 'true' : 'false',
+    );
 
     if (
-      !this.state.errorForInvalidfullNam &&
-      !this.state.errorForInvalidEmail &&
-      !this.state.errorForInvalidPassword
+      !errorForInvalidfullName &&
+      !errorForInvalidEmail &&
+      !errorForInvalidPassword
     ) {
       alert(
         ' Full Name is =' +
-          this.state.errorForInvalidfullName +
+          errorForInvalidfullName +
           '\n' +
           'Email is =' +
-          this.state.errorForInvalidEmail +
+          errorForInvalidEmail +
           '\n' +
           'Password is =' +
-          this.state.errorForInvalidPassword,
+          rrorForInvalidPassword,
       );
     }
   };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={styles.scrollView}
-          keyboardShouldPersistTaps="always">
-          <View style={styles.upperPortion}>
-            <Image
-              style={styles.logo}
-              source={require('../assets/images/ic_launcher_round.png')}
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        keyboardShouldPersistTaps="always">
+        <View style={styles.upperPortion}>
+          <Image
+            style={styles.logo}
+            source={require('../assets/images/ic_launcher_round.png')}
+          />
+          <Text style={styles.heading}>Amplifyd</Text>
+          <Text style={styles.description}>Let’s Get You Connected</Text>
+        </View>
+        <View style={styles.lowerPortion}>
+          <InputField
+            showError={errorForInvalidfullName}
+            type="fullName" 
+            hint="Full Name"
+            issecureText="false"
+            onChangeText={text => handleFullNameChange(text)}
+          />
+          <InputField
+            showError={errorForInvalidEmail}
+            type="email"
+            hint="email"
+            issecureText="false"
+            onChangeText={ text => handleEmailChange(text)}
+          />
+
+          <InputField
+            showError={errorForInvalidPassword}
+            type="password"
+            hint="pasword"
+            issecureText="true"
+            onChangeText={text => handlePasswordChange(text)}
+          />
+
+          <Text style={styles.genderSelectionTitle}>Select your Gender</Text>
+          <View style={styles.genderSelectionView}>
+            <CustomButton
+              textColor={isSelected ? 'white' : 'black'}
+              backgroundColor={isSelected ? '#822D8C' : '#A9A9A9'}
+              name="Male"
+              selected={true}
+              changeGender={text => changeGender.bind(this, text)}
             />
-            <Text style={styles.heading}>Amplifyd</Text>
-            <Text style={styles.description}>Let’s Get You Connected</Text>
+            <CustomButton
+              textColor={isSelected ? 'black' : 'white'}
+              backgroundColor={isSelected ? '#A9A9A9' : '#822D8C'}
+              name="Female"
+              selected={false}
+              changeGender={text => changeGender.bind(this, text)}
+            />
           </View>
-          <View style={styles.lowerPortion}>
-            <InputField
-              showError={this.state.errorForInvalidfullName}
-              type="fullName"
-              hint="Full Name"
-              issecureText="false"
-              onChangeText={text => this.handleFullNameChange(text)}
-            />
-            <InputField
-              showError={this.state.errorForInvalidEmail}
-              type="email"
-              hint="email"
-              issecureText="false"
-              onChangeText={text => this.handleEmailChange(text)}
-            />
 
-            <InputField
-              showError={this.state.errorForInvalidPassword}
-              type="password"
-              hint="pasword"
-              issecureText="true"
-              onChangeText={text => this.handlePasswordChange(text)}
-            />
-            <View>
-              <Button onPress={this.datepicker} title={'Show date picker!'} />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={makeSignUp.bind(this)}>
+            <Text style={styles.signInText}>Sign Up</Text>
+          </TouchableOpacity>
 
-              <Text style={styles.description}>
-                {moment.utc(this.state.date).format('MM/DD/YYYY')}
-              </Text>
-            </View>
+          <View style={styles.signUpViewContainer}>
+            <Text style={styles.messageText}>Already have an acount?</Text>
 
-            {this.state.show && (
-              <DateTimePicker
-                value={this.state.date}
-                mode={'date'}
-                is24Hour={true}
-                display="default"
-                onChange={this.setDate}
-              />
-            )}
-
-            <TouchableOpacity style={styles.buttonStyle} onPress={this.LogIn}>
-              <Text style={styles.signInText}>Sign Up</Text>
+            <TouchableOpacity onPress={navigateToLogIn}>
+              <Text style={styles.signUpText}>Log In</Text>
             </TouchableOpacity>
-
-            <View style={styles.signUpViewContainer}>
-              <Text style={styles.messageText}>Already have an acount?</Text>
-
-              <TouchableOpacity onPress={this.navigateToLogIn}>
-                <Text style={styles.signUpText}>Log In</Text>
-              </TouchableOpacity>
-            </View>
           </View>
-        </ScrollView>
-      </View>
-    );
-  }
-}
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -233,7 +209,7 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   buttonStyle: {
-    marginTop: '3%',
+    marginTop: '5%',
     padding: 10,
     width: '50%',
     alignSelf: 'center',
@@ -266,6 +242,17 @@ const styles = StyleSheet.create({
     fontFamily: 'sfui_text_bold',
     color: '#822D8C',
     textDecorationLine: 'underline',
+  },
+  genderSelectionView: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  genderSelectionTitle: {
+    marginStart: 16,
+    fontSize: 14,
+    fontFamily: 'sfui_text_bold',
+    color: 'black',
   },
 });
 

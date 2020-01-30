@@ -16,8 +16,18 @@ import LogIn from './src/views/LogIn';
 import SignUp from './src/views/SignUp';
 
 const AppNavigator = createStackNavigator({
-  LogIn: {screen: LogIn},
-  SignUp: {screen: SignUp},
+  LogIn: {
+    screen: LogIn,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
 });
 
 const App = createAppContainer(AppNavigator);
