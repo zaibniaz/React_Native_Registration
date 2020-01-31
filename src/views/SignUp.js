@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   StyleSheet,
@@ -33,6 +33,8 @@ import moment from 'moment';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import AccessAsyncStore from '../utils/AccessAsyncStore';
+
 const SignUp = props => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -45,10 +47,24 @@ const SignUp = props => {
     'false',
   );
   const [isSelected, setIsSelected] = useState(true);
+  const [data, setData] = useState({data: null});
 
   const navigateToLogIn = () => {
-    props.navigation.navigate('LogIn');
+    AccessAsyncStore.getItem('user')
+      .then((res, err) => {
+        setData(res);
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+      });
+
+    //  props.navigation.navigate('LogIn');
   };
+
+  useEffect(() => {
+    alert(data);
+  },[data]);
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -62,7 +78,7 @@ const SignUp = props => {
     setPassword(text);
   };
 
-  const handleFullNameChange = (text) => {
+  const handleFullNameChange = text => {
     setFullName(text);
   };
 
@@ -77,10 +93,18 @@ const SignUp = props => {
     );
 
     if (
-      !errorForInvalidfullName &&
-      !errorForInvalidEmail &&
-      !errorForInvalidPassword
+      errorForInvalidfullName &&
+      errorForInvalidEmail &&
+      errorForInvalidPassword
     ) {
+      let user_object = {
+        fullName,
+        email,
+        password,
+      };
+      //setData(user_object);
+      AccessAsyncStore.storeItem('user', user_object);
+
       alert(
         ' Full Name is =' +
           errorForInvalidfullName +
@@ -89,7 +113,7 @@ const SignUp = props => {
           errorForInvalidEmail +
           '\n' +
           'Password is =' +
-          rrorForInvalidPassword,
+          errorForInvalidPassword,
       );
     }
   };
@@ -110,7 +134,7 @@ const SignUp = props => {
         <View style={styles.lowerPortion}>
           <InputField
             showError={errorForInvalidfullName}
-            type="fullName" 
+            type="fullName"
             hint="Full Name"
             issecureText="false"
             onChangeText={text => handleFullNameChange(text)}
@@ -120,7 +144,7 @@ const SignUp = props => {
             type="email"
             hint="email"
             issecureText="false"
-            onChangeText={ text => handleEmailChange(text)}
+            onChangeText={text => handleEmailChange(text)}
           />
 
           <InputField
