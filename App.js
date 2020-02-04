@@ -12,12 +12,12 @@ import {View} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
-import LogIn from './src/views/LogIn';
+import ListHeroesView from './src/views/ListHeroesView';
 import SignUp from './src/views/SignUp';
 
 const AppNavigator = createStackNavigator({
   LogIn: {
-    screen: LogIn,
+    screen: ListHeroesView,
     navigationOptions: {
       headerShown: false,
     },
