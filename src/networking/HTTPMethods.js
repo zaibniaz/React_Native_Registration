@@ -36,9 +36,10 @@ const HTTPMethods = {
 
     switch (response.status) {
       case 200:
-        apiStatus.result = response.json();
+        apiStatus.result = response.data;
         apiStatus.message = 'Get all heroes successfully!';
         apiStatus.isError = false;
+
         break;
       case 400:
         apiStatus.result = [];
