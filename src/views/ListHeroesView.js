@@ -6,30 +6,32 @@ import {
   ToastAndroid,
   View,
   Button,
+  Alert,
 } from 'react-native';
 import Hero from '../models/Hero';
+import ContentLoader from '../components/ContentLoader';
 
 import {getAllHeroes} from '../networking/APIController';
 
 import ItemHeroView from './ItemHeroView';
 
 const ListHeroesView = props => {
-  const [heroes, setHeroes] = useState([]);
-
-  const [fetchedData] = getAllHeroes();
-
-  fetchedData
-    ? fetchedData.isError
-      ? console.log('error')
-      : fetchedData.result.then(data => {
-          setHeroes(data);
-          console.log(fetchedData.message);
-        })
-    : [];
+  const [isLoading, fetchedData] = getAllHeroes();
 
   return (
     <View style={styles.container}>
-      <ItemHeroView heroes={heroes} />
+      {isLoading && <ContentLoader />}
+      {!isLoading && (
+        <ItemHeroView
+          heroes={
+            fetchedData
+              ? fetchedData.isError
+                ? alert(fetchedData.message)
+                : fetchedData.result
+              : []
+          }
+        />
+      )}
     </View>
   );
 };
