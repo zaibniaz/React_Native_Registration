@@ -42,13 +42,10 @@ const LogIn = props => {
     );
 
     if (!errorForInvalidEmail && !errorForInvalidPassword) {
-      alert(
-        'Email is =' +
-          errorForInvalidEmail +
-          '\n' +
-          'Password is =' +
-          errorForInvalidPassword,
-      );
+      props.navigation.replace('ListHeroesView');
+      alert('Successfully LoggedIn', [
+        {text: 'OK', onPress: () => props.navigation.replace('ListHeroesView')},
+      ]);
     }
   };
 

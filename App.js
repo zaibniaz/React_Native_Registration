@@ -14,10 +14,25 @@ import {createStackNavigator} from 'react-navigation-stack';
 
 import ListHeroesView from './src/views/ListHeroesView';
 import SignUp from './src/views/SignUp';
+import LogIn from './src/views/LogIn';
+import SplashView from './src/views/SplashView';
+import BottomNavigationView from './src/views/BottomNavigationView';
 
-const AppNavigator = createStackNavigator({
+const splashNavigator = createStackNavigator({
+  BottomNavigationView: {
+    screen: BottomNavigationView,
+    navigationOptions: {
+      headerShown: true,
+    },
+  },
+  SplashView: {
+    screen: SplashView,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
   LogIn: {
-    screen: ListHeroesView,
+    screen: LogIn,
     navigationOptions: {
       headerShown: false,
     },
@@ -28,8 +43,14 @@ const AppNavigator = createStackNavigator({
       headerShown: false,
     },
   },
+  ListHeroesView: {
+    screen: ListHeroesView,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
 });
 
-const App = createAppContainer(AppNavigator);
+const App = createAppContainer(splashNavigator);
 
 export default App;
