@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, FlatList, ToastAndroid, View} from 'react-native';
+import {Card, ListItem, Button, Icon} from 'react-native-elements';
 import Hero from '../models/Hero';
 
 const ItemHeroView = props => {
@@ -8,11 +9,14 @@ const ItemHeroView = props => {
   return (
     <View style={styles.container}>
       <FlatList
+        style={styles.container}
         data={props.heroes}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
-          <View style={styles.flatview}>
-            <Text style={styles.name}>{item.name}</Text>
+          <View style={styles.cardView}>
+            <Text> {item.name}</Text>
+            <Text> {item.heroPowers}</Text>
+            <Text> {item.heroId}</Text>
           </View>
         )}
       />
@@ -22,29 +26,16 @@ const ItemHeroView = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    elevation: 0,
+    margin: 5,
   },
-  h2text: {
-    marginTop: 10,
-    fontFamily: 'Helvetica',
-    fontSize: 36,
-    fontWeight: 'bold',
-  },
-  flatview: {
-    justifyContent: 'center',
-    paddingTop: 30,
-    borderRadius: 2,
-  },
-  name: {
-    fontFamily: 'Verdana',
-    fontSize: 18,
-  },
-  email: {
-    color: 'red',
+  cardView: {
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    padding: 10,
+    marginTop: 7,
+    borderRadius: 5,
+    elevation: 1,
   },
 });
 export default ItemHeroView;

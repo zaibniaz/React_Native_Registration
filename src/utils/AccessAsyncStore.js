@@ -1,13 +1,8 @@
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const AccessAsyncStore = {
   storeItem: async (key, item) => {
-    try {
-      //we want to wait for the Promise returned by AsyncStorage.setItem()
-      //to be resolved to the actual value before returning the value
-
-    //   if (item !== 'String') item == JSON.stringify(item);
-
+    try { 
       var jsonOfItem = await AsyncStorage.setItem(key, JSON.stringify(item));
       return jsonOfItem;
     } catch (error) {

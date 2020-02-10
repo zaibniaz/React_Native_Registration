@@ -35,6 +35,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import AccessAsyncStore from '../utils/AccessAsyncStore';
 
+import User from '../models/User';
+
 const SignUp = props => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -50,21 +52,21 @@ const SignUp = props => {
   const [data, setData] = useState({data: null});
 
   const navigateToLogIn = () => {
-    AccessAsyncStore.getItem('user')
-      .then((res, err) => {
-        setData(res);
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      });
+    // AccessAsyncStore.getItem('user')
+    //   .then((res, err) => {
+    //     setData(res);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     alert(error);
+    //   });
 
-    //  props.navigation.navigate('LogIn');
+    props.navigation.navigate('LogIn');
   };
 
-  useEffect(() => {
-    alert(data);
-  },[data]);
+  // useEffect(() => {
+  //   alert(data);
+  // }, [data]);
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -97,24 +99,14 @@ const SignUp = props => {
       errorForInvalidEmail &&
       errorForInvalidPassword
     ) {
-      let user_object = {
-        fullName,
-        email,
-        password,
-      };
+      let user_object = new User(fullName, email, password);
       //setData(user_object);
       AccessAsyncStore.storeItem('user', user_object);
+      props.navigation.replace('ListHeroesView');
 
-      alert(
-        ' Full Name is =' +
-          errorForInvalidfullName +
-          '\n' +
-          'Email is =' +
-          errorForInvalidEmail +
-          '\n' +
-          'Password is =' +
-          errorForInvalidPassword,
-      );
+      alert('Successfully Signed Up', [
+        {text: 'OK', onPress: () => props.navigation.replace('ListHeroesView')},
+      ]);
     }
   };
 
