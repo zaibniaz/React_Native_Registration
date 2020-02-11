@@ -42,9 +42,12 @@ const LogIn = props => {
     );
 
     if (!errorForInvalidEmail && !errorForInvalidPassword) {
-      props.navigation.replace('ListHeroesView');
+      props.navigation.replace('BottomNavigationView')
       alert('Successfully LoggedIn', [
-        {text: 'OK', onPress: () => props.navigation.replace('ListHeroesView')},
+        {
+          text: 'OK',
+          onPress: () => props.navigation.replace('BottomNavigationView'),
+        },
       ]);
     }
   };

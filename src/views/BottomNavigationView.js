@@ -1,21 +1,34 @@
 import React, {useCallback} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Button, Alert} from 'react-native';
 import {createNavigator, TabRouter} from 'react-navigation';
+import ListHeroesView from './ListHeroesView';
 import BottomNavigation, {
   FullTab,
 } from 'react-native-material-bottom-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AccessAsyncStore from '../utils/AccessAsyncStore';
+import SignUp from './SignUp';
 
 // Screens. Normally you would put these in separate files.
-const Movies = () => (
-  <View>
-    <Text>Movies</Text>
-  </View>
-);
-const Music = () => (
-  <View>
-    <Text>Music</Text>
-  </View>
+const Movies = props => <ListHeroesView />;
+const Music = props => (
+  <Button
+    title="Log Out"
+    onPress={() => {
+      // alert('Are you sure to Log out?', [
+      //   {
+      //     text: 'Yes',
+      //     onPress: () => {
+      //       console.log('clear');
+      //       // AccessAsyncStore.clearAsyncStorage();
+      //       // props.navigation.replace('SignUp');
+      //     },
+      //   },
+      // ])
+      AccessAsyncStore.clearAsyncStorage();
+      props.navigation.replace('SignUp');
+    }}
+  />
 );
 const Books = () => (
   <View>

@@ -1,17 +1,19 @@
 import HTTPMethods from './HTTPMethods';
-import Constants from '../utils/Constants';
+
 import ApiStatus from '../models/ApiStatus';
 import Hero from '../models/Hero';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 
-export const getAllHeroes = () => {
+export const getAllHeroes = url => {
   const [fetchedData, setFetchedData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(url);
+
   let apiStatus = new ApiStatus();
   apiStatus.result = [];
-  let url = Constants.API_URL;
+
   let header = HTTPMethods.getHeader(Constants.GET);
 
   useEffect(() => {
