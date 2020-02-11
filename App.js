@@ -7,7 +7,6 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -17,16 +16,17 @@ import SignUp from './src/views/SignUp';
 import LogIn from './src/views/LogIn';
 import SplashView from './src/views/SplashView';
 import BottomNavigationView from './src/views/BottomNavigationView';
+import HeroDetailView from './src/views/HeroDetailView';
 
 const splashNavigator = createStackNavigator({
-  BottomNavigationView: {
-    screen: BottomNavigationView,
-    navigationOptions: {
-      headerShown: true,
-    },
-  },
   SplashView: {
     screen: SplashView,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  BottomNavigationView: {
+    screen: BottomNavigationView,
     navigationOptions: {
       headerShown: false,
     },
@@ -47,6 +47,12 @@ const splashNavigator = createStackNavigator({
     screen: ListHeroesView,
     navigationOptions: {
       headerShown: false,
+    },
+  },
+  HeroDetailView: {
+    screen: HeroDetailView,
+    navigationOptions: {
+      headerShown: true,
     },
   },
 });

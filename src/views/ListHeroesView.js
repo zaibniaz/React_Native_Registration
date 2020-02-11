@@ -14,9 +14,10 @@ import ContentLoader from '../components/ContentLoader';
 import {getAllHeroes} from '../networking/APIController';
 
 import ItemHeroView from './ItemHeroView';
+import Constants from '../utils/Constants';
 
 const ListHeroesView = props => {
-  const [isLoading, fetchedData] = getAllHeroes();
+  const [isLoading, fetchedData] = getAllHeroes(Constants.API_URL);
 
   return (
     <View style={styles.container}>
@@ -30,6 +31,7 @@ const ListHeroesView = props => {
                 : fetchedData.result
               : []
           }
+          navigate={props.navigate}
         />
       )}
     </View>

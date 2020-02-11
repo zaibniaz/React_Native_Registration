@@ -1,7 +1,7 @@
 import {StyleSheet, View, Image, Alert} from 'react-native';
 import React from 'react';
 
-import ListHeroesView from './ListHeroesView';
+import BottomNavigationView from './BottomNavigationView';
 import SignUp from './SignUp';
 import LogIn from './LogIn';
 import User from '../models/User';
@@ -15,7 +15,7 @@ const SplashView = props => {
         if (res != null) {
           let user = new User(JSON.parse(res));
           if (user.email === '') props.navigation.replace('SignUp');
-          else props.navigation.replace('ListHeroesView');
+          else props.navigation.replace('BottomNavigationView');
         } else props.navigation.replace('SignUp');
 
         //alert(user.fullName);

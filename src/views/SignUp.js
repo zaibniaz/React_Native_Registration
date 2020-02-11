@@ -52,15 +52,6 @@ const SignUp = props => {
   const [data, setData] = useState({data: null});
 
   const navigateToLogIn = () => {
-    // AccessAsyncStore.getItem('user')
-    //   .then((res, err) => {
-    //     setData(res);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert(error);
-    //   });
-
     props.navigation.navigate('LogIn');
   };
 
@@ -102,10 +93,12 @@ const SignUp = props => {
       let user_object = new User(fullName, email, password);
       //setData(user_object);
       AccessAsyncStore.storeItem('user', user_object);
-      props.navigation.replace('ListHeroesView');
-
+      props.navigation.navigate('BottomNavigationView');
       alert('Successfully Signed Up', [
-        {text: 'OK', onPress: () => props.navigation.replace('ListHeroesView')},
+        {
+          text: 'OK',
+          onPress: () => props.navigation.replace('BottomNavigationView'),
+        },
       ]);
     }
   };

@@ -1,10 +1,20 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, FlatList, ToastAndroid, View} from 'react-native';
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  FlatList,
+  ToastAndroid,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {Card, ListItem, Button, Icon} from 'react-native-elements';
 import Hero from '../models/Hero';
 
+import HeroDetailView from './HeroDetailView';
+import {withNavigation} from 'react-navigation';
+
 const ItemHeroView = props => {
-  const [heroes, setHeroes] = useState('');
+  //  const navigate = props.navigate;
 
   return (
     <View style={styles.container}>
@@ -13,11 +23,19 @@ const ItemHeroView = props => {
         data={props.heroes}
         showsVerticalScrollIndicator={false}
         renderItem={({item}) => (
-          <View style={styles.cardView}>
-            <Text> {item.name}</Text>
-            <Text> {item.heroPowers}</Text>
-            <Text> {item.heroId}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              // ToastAndroid.show('Item To Delete' + item.id, ToastAndroid.SHORT);
+              props.navigation.navigate('HeroDetailView', {
+                itemId: item.id,
+              });
+            }}>
+            <View style={styles.cardView}>
+              <Text> {item.name}</Text>
+              <Text> {item.id}</Text>
+              <Text> {item.difficulty}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -38,4 +56,4 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
 });
-export default ItemHeroView;
+export default withNavigation(ItemHeroView);
