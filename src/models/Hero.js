@@ -5,6 +5,8 @@ export default class Hero {
   description: String;
   role: String;
   image: String;
+  secondary: String;
+  appliedJobstate: Boolean;
 
   constructor(data: any) {
     this.id = data['id'];
@@ -13,6 +15,8 @@ export default class Hero {
     this.description = data['description'];
     this.role = data['role'];
     this.image = data['image'];
+    this.secondary = data['secondary'];
+    this.appliedJobstate = true;
   }
 
   clone() {
@@ -23,6 +27,8 @@ export default class Hero {
       description: this.description,
       role: this.role,
       image: this.image,
+      secondary: this.secondary,
+      appliedJobstate: this.appliedJobstate,
     });
   }
 }

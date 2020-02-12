@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -18,7 +18,12 @@ import SplashView from './src/views/SplashView';
 import BottomNavigationView from './src/views/BottomNavigationView';
 import HeroDetailView from './src/views/HeroDetailView';
 
+import {UserProvider} from './src/contextApi/UserContext';
+
+import AccessAsyncStore from './src/utils/AccessAsyncStore';
+
 const splashNavigator = createStackNavigator({
+  
   SplashView: {
     screen: SplashView,
     navigationOptions: {
@@ -59,4 +64,8 @@ const splashNavigator = createStackNavigator({
 
 const App = createAppContainer(splashNavigator);
 
-export default App;
+export default () => (
+  <UserProvider>
+    <App />
+  </UserProvider>
+);
