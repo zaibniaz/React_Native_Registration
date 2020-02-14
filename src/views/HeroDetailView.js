@@ -12,6 +12,7 @@ const HeroDetailView = props => {
 
   const [isLoading, fetchedData] = getAllHeroes(
     Constants.API_URL + '/' + state.params.itemId,
+    [],
   );
 
   return (

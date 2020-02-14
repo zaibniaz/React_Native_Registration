@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from 'react-native';
 import {Card, ListItem, Button, Divider, Alert} from 'react-native-elements';
 import Hero from '../models/Hero';
@@ -17,76 +18,71 @@ import HeroDetailView from './HeroDetailView';
 import {withNavigation} from 'react-navigation';
 
 const ItemHeroView = props => {
-  //  const navigate = props.navigate;
-
   const [appliedJobstate, setAppliedJobstate] = useState([]);
   const [visitedstate, setVisitedState] = useState([]);
-
+  //console.log('Item Hero View');
   return (
     <View style={styles.container}>
-      <FlatList
-        data={props.heroes}
-        showsVerticalScrollIndicator={false}
-        renderItem={({item}) => (
-          <View style={styles.cardView}>
-            <View style={styles.contentView}>
-              <TouchableOpacity
-                onPress={() => {
-                  props.navigation.navigate('HeroDetailView', {
-                    itemId: item.id,
-                  });
-                }}>
-                <View style={styles.viewForRow}>
-                  <Image style={styles.heroImage} source={{uri: item.image}} />
-                  <View>
-                    <Text style={styles.title}> {item.name}</Text>
-                    <Text> {item.secondary}</Text>
-                  </View>
-                </View>
-                <View>
-                  <Text style={styles.description}>{item.description}</Text>
-                  <Text style={styles.description}>
-                    {'Difficulty Level: ' + item.difficulty}
-                  </Text>
-                </View>
-                <Divider style={styles.divider} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setVisitedState([...visitedstate, item.id]);
-                }}>
-                {visitedstate.includes(item.id) == false && (
-                  <View style={styles.viewForVisited}>
-                    <View style={styles.viewForRow}>
-                      <MaterialIcons name={'done'} size={20} />
-                      <Text> Already Visited</Text>
-                    </View>
-                    <View style={styles.viewForRow}>
-                      <MaterialIcons name={'save'} size={20} />
-                      <MaterialIcons name={'cancel'} size={20} />
-                    </View>
-                  </View>
-                )}
-              </TouchableOpacity>
+      <View style={styles.cardView}>
+        <View style={styles.contentView}>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('HeroDetailView', {
+                itemId: props.hero.id,
+              });
+            }}>
+            <View style={styles.viewForRow}>
+              <Image
+                style={styles.heroImage}
+                source={{uri: props.hero.image}}
+              />
+              <View>
+                <Text style={styles.title}> {props.hero.name}</Text>
+                <Text> {props.hero.secondary}</Text>
+              </View>
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                setAppliedJobstate([...appliedJobstate, item.id]);
-              }}>
-              {appliedJobstate.includes(item.id) == false && (
-                <View style={styles.viewForApply}>
+            <View>
+              <Text style={styles.description}>{props.hero.description}</Text>
+              <Text style={styles.description}>
+                {'Difficulty Level: ' + props.hero.difficulty}
+              </Text>
+            </View>
+            <Divider style={styles.divider} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setVisitedState([...visitedstate, props.hero.id]);
+            }}>
+            {visitedstate.includes(props.hero.id) == false && (
+              <View style={styles.viewForVisited}>
+                <View style={styles.viewForRow}>
+                  <MaterialIcons name={'done'} size={20} />
                   <Text> Already Visited</Text>
-
-                  <View style={styles.viewForRow}>
-                    <Text style={styles.text}>Yes</Text>
-                    <Text style={styles.text}>No</Text>
-                  </View>
                 </View>
-              )}
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+                <View style={styles.viewForRow}>
+                  <MaterialIcons name={'save'} size={20} />
+                  <MaterialIcons name={'cancel'} size={20} />
+                </View>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            setAppliedJobstate([...appliedJobstate, props.hero.id]);
+          }}>
+          {appliedJobstate.includes(props.hero.id) == false && (
+            <View style={styles.viewForApply}>
+              <Text> Already Visited</Text>
+
+              <View style={styles.viewForRow}>
+                <Text style={styles.text}>Yes</Text>
+                <Text style={styles.text}>No</Text>
+              </View>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -94,6 +90,7 @@ const ItemHeroView = props => {
 const styles = StyleSheet.create({
   container: {
     elevation: 0,
+  
   },
   cardView: {
     margin: 10,
