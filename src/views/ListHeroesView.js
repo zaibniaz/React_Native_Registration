@@ -11,44 +11,49 @@ import {
 } from 'react-native';
 import Hero from '../models/Hero';
 import ContentLoader from '../components/ContentLoader';
+import NetworkErrorView from '../components/NetworkErrorView';
 
 import {getAllHeroes} from '../networking/APIController';
 
 import ItemHeroView from './ItemHeroView';
 import Constants from '../utils/Constants';
+import NetInfo from '@react-native-community/netinfo';
 
 const ListHeroesView = props => {
-  const [isRefreshing, setRefreshing] = useState(false);
+  const [isRefreshing, setRefreshing] = useState(true);
+
   const [isLoading, fetchedData] = getAllHeroes(Constants.API_URL, [
     isRefreshing,
   ]);
 
   return (
     <View style={styles.container}>
-      {isLoading && <ContentLoader />}
+      {isLoading && fetchedData === null && <ContentLoader />}
+
+      {!isLoading && fetchedData != null && fetchedData.isError && (
+        <NetworkErrorView
+          message={fetchedData.message}
+          onButtonPressed={() => {
+            setRefreshing(!isRefreshing);
+          }}
+        />
+      )}
+
       <View>
         <FlatList
-          data={
-            !isLoading && fetchedData != null
-              ? fetchedData.isError
-                ? alert(fetchedData.message)
-                : fetchedData.result
-              : []
-          }
+          data={fetchedData != null && fetchedData.result}
           key={item => item.id}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => {
+            setRefreshing(false);
             return <ItemHeroView hero={item} navigate={props.navigate} />;
           }}
           refreshControl={
             <RefreshControl
               colors={['#9Bd35A', '#689F38']}
-              refreshing={isLoading}
+              refreshing={isRefreshing}
               onRefresh={() => {
-                //  setRefreshing(true);
-                setRefreshing(isRefreshing ? false : true);
-                //  console.log(isRefreshing);
-                console.log(isLoading);
+                setRefreshing(true);
               }}
             />
           }

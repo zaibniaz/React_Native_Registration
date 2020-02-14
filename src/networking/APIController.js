@@ -33,7 +33,6 @@ export const getAllHeroes = (url, dependecies) => {
         setFetchedData(apiStatus);
       });
   }, dependecies);
-  console.log(isLoading);
 
   return [isLoading, fetchedData];
 };
