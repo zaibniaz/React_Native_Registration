@@ -5,7 +5,7 @@ import Hero from '../models/Hero';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 
-export const getAllHeroes = url => {
+export const getAllHeroes = (url, dependecies) => {
   const [fetchedData, setFetchedData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +32,7 @@ export const getAllHeroes = url => {
         apiStatus.message = `${error.message}`;
         setFetchedData(apiStatus);
       });
-  }, []);
+  }, dependecies);
 
   return [isLoading, fetchedData];
 };
