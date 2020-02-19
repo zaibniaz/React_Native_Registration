@@ -28,21 +28,17 @@ import InputField from '../components/InputField';
 const LogIn = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorForInvalidEmail, seterrorForInvalidEmail] = useState('false');
-  const [errorForInvalidPassword, seterrorForInvalidPassword] = useState(
-    'false',
-  );
+  const [errorForInvalidEmail, seterrorForInvalidEmail] = useState(true);
+  const [errorForInvalidPassword, seterrorForInvalidPassword] = useState(true);
 
-  const logIn = () => {
-    //Validating Email From Helper Class and notifying state
-    seterrorForInvalidEmail(Helper.isEmailNotValid(email) ? 'true' : 'false');
-    //Validating PAssword From Helper Class and notifying state
-    seterrorForInvalidPassword(
-      Helper.isPasswordNotValid(password) ? 'true' : 'false',
-    );
+  const performLogIn = () => {
 
-    if (!errorForInvalidEmail && !errorForInvalidPassword) {
-      props.navigation.replace('BottomNavigationView')
+    seterrorForInvalidEmail(Helper.isEmailValid(email));
+
+    seterrorForInvalidPassword(Helper.isPasswordNotValid(password));
+
+    if (Helper.isEmailValid(email) && Helper.isPasswordNotValid(password)) {
+      props.navigation.replace('BottomNavigationView');
       alert('Successfully LoggedIn', [
         {
           text: 'OK',
@@ -79,14 +75,14 @@ const LogIn = props => {
         </View>
         <View style={styles.lowerPortion}>
           <InputField
-            showError={errorForInvalidEmail}
+            isValid={errorForInvalidEmail}
             type="email"
             hint="email"
             issecureText="false"
             onChangeText={text => handleEmailChange(text)}
           />
           <InputField
-            showError={errorForInvalidPassword}
+            isValid={errorForInvalidPassword}
             type="password"
             hint="pasword"
             issecureText="true"
@@ -95,7 +91,7 @@ const LogIn = props => {
 
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={logIn.bind(this)}>
+            onPress={performLogIn.bind(this)}>
             <Text style={styles.signInText}>Sign In</Text>
           </TouchableOpacity>
           <View style={styles.signUpViewContainer}>

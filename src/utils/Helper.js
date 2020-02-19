@@ -1,33 +1,33 @@
 import {Snackbar} from 'react-native-paper';
 
 const Helper = {
-  isPasswordNotValid: function(text) {
+  isPasswordValid: function(text) {
     try {
       if (!Helper.isEmpty(text)) {
         if (text.length < 8) {
-          return true;
-        } else {
           return false;
+        } else {
+          return true;
         }
       } else {
-        return true;
+        return false;
       }
     } catch (error) {
       alert(error);
       return false;
     }
   },
-  isEmailNotValid: function(text) {
+  isEmailValid: function(text) {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     try {
       if (!Helper.isEmpty(text)) {
         if (!reg.test(text)) {
-          return true;
-        } else if (reg.test(text)) {
           return false;
+        } else if (reg.test(text)) {
+          return true;
         }
       } else {
-        return true;
+        return false;
       }
     } catch (error) {
       return false;
@@ -38,12 +38,12 @@ const Helper = {
     try {
       if (!Helper.isEmpty(text)) {
         if (text.length < 4 || !reg.test(text)) {
-          return true;
-        } else {
           return false;
+        } else {
+          return true;
         }
       } else {
-        return true;
+        return false;
       }
     } catch (error) {
       alert(error);

@@ -1,9 +1,32 @@
-import React from 'react';
+import React, {createContext, useState} from 'react';
 
-const UserContext = React.createContext();
+import AccessAsyncStore from '../utils/AccessAsyncStore';
 
-const UserProvider = UserContext.Provider;
+export const UserContext = createContext();
 
-const UserConsumer = UserContext.Consumer;
+const UserProvider = props => {
+  const [userState, setUserState] = useState({});
 
-export {UserProvider, UserConsumer};
+  const getUserObject = () => {
+    AccessAsyncStore.getItem('user')
+      .then((res, err) => {
+        if (res != null) {
+          let user = JSON.parse(res);
+          console.log('context' + user);
+          setUserState(user);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+      });
+  };
+
+  return (
+    <UserContext.Provider value={{userState, getUserObject}}>
+      {props.children}
+    </UserContext.Provider>
+  );
+};
+
+export {UserProvider};

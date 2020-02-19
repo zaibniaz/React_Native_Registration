@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 
 import {
   StyleSheet,
@@ -37,27 +37,22 @@ import AccessAsyncStore from '../utils/AccessAsyncStore';
 
 import User from '../models/User';
 
+import {UserContext} from '../contextApi/UserContext';
+
 const SignUp = props => {
+  const {getUserObject} = useContext(UserContext);
+
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorForInvalidfullName, setErrorForInvalidfullName] = useState(
-    'false',
-  );
-  const [errorForInvalidEmail, setErrorForInvalidEmail] = useState('false');
-  const [errorForInvalidPassword, setErrorForInvalidPassword] = useState(
-    'false',
-  );
+  const [validfullName, setValidfullName] = useState(true);
+  const [validEmail, setValidEmail] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
   const [isSelected, setIsSelected] = useState(true);
-  const [data, setData] = useState({data: null});
 
-  const navigateToLogIn = () => {
+  const navigateToLogIn = props => {
     props.navigation.navigate('LogIn');
   };
-
-  // useEffect(() => {
-  //   alert(data);
-  // }, [data]);
 
   const handleEmailChange = text => {
     setEmail(text);
@@ -77,16 +72,16 @@ const SignUp = props => {
 
   const makeSignUp = () => {
     //Validating Name From Helper Class and notifying state
-    setErrorForInvalidfullName(Helper.isNameValid(fullName));
+    setValidfullName(Helper.isNameValid(fullName));
     //Validating Email From Helper Class and notifying state
-    setErrorForInvalidEmail(Helper.isEmailNotValid(email));
+    setValidEmail(Helper.isEmailValid(email));
     //Validating PAssword From Helper Class and notifying state
-    setErrorForInvalidPassword(Helper.isPasswordNotValid(password));
+    setValidPassword(Helper.isPasswordValid(password));
 
     if (
-      errorForInvalidfullName &&
-      errorForInvalidEmail &&
-      errorForInvalidPassword
+      Helper.isNameValid(fullName) &&
+      Helper.isEmailValid(email) &&
+      Helper.isPasswordValid(password)
     ) {
       const user_object = {
         fullName,
@@ -95,11 +90,17 @@ const SignUp = props => {
       };
 
       AccessAsyncStore.storeItem('user', new User(user_object));
+
       props.navigation.navigate('BottomNavigationView');
+
+      getUserObject();
       alert('Successfully Signed Up', [
         {
           text: 'OK',
-          onPress: () => props.navigation.replace('BottomNavigationView'),
+          onPress: () => {
+            setUserState(user_object);
+            //props.navigation.replace('BottomNavigationView');
+          },
         },
       ]);
     }
@@ -120,14 +121,14 @@ const SignUp = props => {
         </View>
         <View style={styles.lowerPortion}>
           <InputField
-            showError={errorForInvalidfullName}
+            isValid={validfullName}
             type="fullName"
             hint="Full Name"
             issecureText="false"
             onChangeText={text => handleFullNameChange(text)}
           />
           <InputField
-            showError={errorForInvalidEmail}
+            isValid={validEmail}
             type="email"
             hint="email"
             issecureText="false"
@@ -135,7 +136,7 @@ const SignUp = props => {
           />
 
           <InputField
-            showError={errorForInvalidPassword}
+            isValid={validPassword}
             type="password"
             hint="pasword"
             issecureText="true"

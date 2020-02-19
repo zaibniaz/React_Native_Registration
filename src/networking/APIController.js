@@ -22,14 +22,19 @@ export const getAllHeroes = (url, dependecies) => {
       .get(url, header)
       .then(responseData => {
         setIsLoading(false);
-        var data = HTTPMethods.returnResponse(responseData);
-        setFetchedData(data);
+        // var data = HTTPMethods.returnResponse(responseData);
+
+        apiStatus.result = responseData.data;
+        apiStatus.isError = false;
+        apiStatus.message = `Get all heroes successfully!`;
+        setFetchedData(apiStatus);
       })
       .catch(error => {
         setIsLoading(false);
         apiStatus.result = [];
         apiStatus.isError = true;
         apiStatus.message = `${error.message}`;
+        //var data = HTTPMethods.returnResponse(responseData);
         setFetchedData(apiStatus);
       });
   }, dependecies);
