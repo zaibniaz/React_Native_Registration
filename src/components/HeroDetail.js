@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, Image, StyleSheet, ActivityIndicator} from 'react-native';
+import {UserContext} from '../contextApi/UserContext';
 
 const HeroDetail = props => {
   const [isLoading, setLoading] = useState(true);
@@ -12,25 +13,33 @@ const HeroDetail = props => {
   //   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Image
-          style={styles.image}
-          //   onLoadEnd={handleClose(false)}
-          source={{uri: props.hero.image}}
-        />
+    <UserContext.Consumer>
+      {context => {
+        const {userState} = context;
+        //   console.log(userState.fullName);
+        return (
+          <View style={styles.container}>
+            <View>
+              <Image
+                style={styles.image}
+                //   onLoadEnd={handleClose(false)}
+                source={{uri: props.hero.image}}
+              />
 
-        {/* <ActivityIndicator
+              {/* <ActivityIndicator
             style={styles.activityIndicator}
             animating={isLoading}
           /> */}
-      </View>
+            </View>
 
-      <Text> {props.hero.name}</Text>
-      <Text> {props.hero.description}</Text>
-      <Text> {props.hero.role}</Text>
-      <Text> {props.hero.difficulty}</Text>
-    </View>
+            <Text> {userState.fullName}</Text>
+            <Text> {props.hero.description}</Text>
+            <Text> {props.hero.role}</Text>
+            <Text> {props.hero.difficulty}</Text>
+          </View>
+        );
+      }}
+    </UserContext.Consumer>
   );
 };
 

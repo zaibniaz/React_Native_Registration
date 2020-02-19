@@ -14,11 +14,12 @@ const SplashView = props => {
       .then((res, err) => {
         if (res != null) {
           let user = new User(JSON.parse(res));
+          /// alert(user.fullName);
           if (user.email === '') props.navigation.replace('SignUp');
           else props.navigation.replace('BottomNavigationView');
         } else props.navigation.replace('SignUp');
 
-        //alert(user.fullName);
+        //
       })
       .catch(error => {
         console.log(error);

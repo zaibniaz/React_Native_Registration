@@ -8,11 +8,8 @@ const InputField = props => {
   return (
     <View>
       <TextInput
-        style={
-          props.showError == 'true' ? styles.errorField : styles.textInput
-          
-        }
-        secureTextEntry={props.issecureText == 'true' ? true : false}
+        style={props.isValid ? styles.textInput : styles.errorField}
+        secureTextEntry={props.issecureText == true ? true : false}
         textContentType={props.type == 'email' ? 'emailAddress' : 'password'}
         placeholder={props.hint}
         placeholderTextColor="grey"

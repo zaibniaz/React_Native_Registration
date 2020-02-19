@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
 
 import ContentLoader from '../components/ContentLoader';
@@ -6,6 +6,8 @@ import ContentLoader from '../components/ContentLoader';
 import {getAllHeroes} from '../networking/APIController';
 
 import HeroDetail from '../components/HeroDetail';
+
+
 
 const HeroDetailView = props => {
   const {state} = props.navigation;
@@ -16,8 +18,14 @@ const HeroDetailView = props => {
   );
 
   return (
+    // <UserContext.Consumer>
+    //   {context => {
+    //     const {userState} = context;
+    //     //   console.log(userState.fullName);
+    //     return (
     <View style={styles.container}>
       {isLoading && <ContentLoader />}
+
       {!isLoading && (
         <HeroDetail
           hero={
@@ -30,6 +38,9 @@ const HeroDetailView = props => {
         />
       )}
     </View>
+    //     );
+    //   }}
+    // </UserContext.Consumer>
   );
 };
 

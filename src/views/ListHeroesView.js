@@ -20,16 +20,13 @@ import Constants from '../utils/Constants';
 import NetInfo from '@react-native-community/netinfo';
 
 const ListHeroesView = props => {
-  const [isRefreshing, setRefreshing] = useState(true);
-
+  const [isRefreshing, setRefreshing] = useState(false);
   const [isLoading, fetchedData] = getAllHeroes(Constants.API_URL, [
     isRefreshing,
   ]);
 
   return (
     <View style={styles.container}>
-      {isLoading && fetchedData === null && <ContentLoader />}
-
       {!isLoading && fetchedData != null && fetchedData.isError && (
         <NetworkErrorView
           message={fetchedData.message}
@@ -44,18 +41,21 @@ const ListHeroesView = props => {
           data={fetchedData != null && fetchedData.result}
           key={item => item.id}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={isLoading && <ContentLoader />}
           renderItem={({item}) => {
             setRefreshing(false);
             return <ItemHeroView hero={item} navigate={props.navigate} />;
           }}
           refreshControl={
-            <RefreshControl
-              colors={['#9Bd35A', '#689F38']}
-              refreshing={isRefreshing}
-              onRefresh={() => {
-                setRefreshing(true);
-              }}
-            />
+            !isLoading && (
+              <RefreshControl
+                colors={['#9Bd35A', '#689F38']}
+                refreshing={isRefreshing}
+                onRefresh={() => {
+                  setRefreshing(true);
+                }}
+              />
+            )
           }
         />
       </View>
@@ -66,6 +66,7 @@ const ListHeroesView = props => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
   },
 });
 export default ListHeroesView;
