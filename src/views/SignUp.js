@@ -77,22 +77,24 @@ const SignUp = props => {
 
   const makeSignUp = () => {
     //Validating Name From Helper Class and notifying state
-    setErrorForInvalidfullName(Helper.isNameValid(fullName) ? 'true' : 'false');
+    setErrorForInvalidfullName(Helper.isNameValid(fullName));
     //Validating Email From Helper Class and notifying state
-    setErrorForInvalidEmail(Helper.isEmailNotValid(email) ? 'true' : 'false');
+    setErrorForInvalidEmail(Helper.isEmailNotValid(email));
     //Validating PAssword From Helper Class and notifying state
-    setErrorForInvalidPassword(
-      Helper.isPasswordNotValid(password) ? 'true' : 'false',
-    );
+    setErrorForInvalidPassword(Helper.isPasswordNotValid(password));
 
     if (
       errorForInvalidfullName &&
       errorForInvalidEmail &&
       errorForInvalidPassword
     ) {
-      let user_object = new User(fullName, email, password);
-      //setData(user_object);
-      AccessAsyncStore.storeItem('user', user_object);
+      const user_object = {
+        fullName,
+        email,
+        password,
+      };
+
+      AccessAsyncStore.storeItem('user', new User(user_object));
       props.navigation.navigate('BottomNavigationView');
       alert('Successfully Signed Up', [
         {
