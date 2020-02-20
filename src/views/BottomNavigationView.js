@@ -8,39 +8,26 @@ import BottomNavigation, {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AccessAsyncStore from '../utils/AccessAsyncStore';
 import SignUp from './SignUp';
+import StepIndicatorView from './StepIndicatorView';
 
 // Screens. Normally you would put these in separate files.
 const Movies = props => <ListHeroesView />;
+const Books = () => <StepIndicatorView />;
 const Music = props => (
   <Button
     title="Log Out"
     onPress={() => {
-      // alert('Are you sure to Log out?', [
-      //   {
-      //     text: 'Yes',
-      //     onPress: () => {
-      //       console.log('clear');
-      //       // AccessAsyncStore.clearAsyncStorage();
-      //       // props.navigation.replace('SignUp');
-      //     },
-      //   },
-      // ])
       AccessAsyncStore.clearAsyncStorage();
       props.navigation.replace('SignUp');
     }}
   />
 );
-const Books = () => (
-  <View>
-    <Text>Books</Text>
-  </View>
-);
 
 function AppTabView(props) {
   const tabs = [
     {key: 'Movies', label: 'Movies', barColor: '#00695C', icon: 'home'},
-    {key: 'Music', label: 'Music', barColor: '#6A1B9A', icon: 'music'},
     {key: 'Books', label: 'Books', barColor: '#1565C0', icon: 'book'},
+    {key: 'Music', label: 'Music', barColor: '#6A1B9A', icon: 'music'},
   ];
 
   const {navigation, descriptors} = props;
