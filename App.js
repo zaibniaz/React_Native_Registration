@@ -17,13 +17,13 @@ import LogIn from './src/views/LogIn';
 import SplashView from './src/views/SplashView';
 import BottomNavigationView from './src/views/BottomNavigationView';
 import HeroDetailView from './src/views/HeroDetailView';
+import StepIndicatorView from './src/views/StepIndicatorView';
 
 import {UserProvider} from './src/contextApi/UserContext';
 
 import AccessAsyncStore from './src/utils/AccessAsyncStore';
 
 const splashNavigator = createStackNavigator({
-  
   SplashView: {
     screen: SplashView,
     navigationOptions: {
@@ -56,6 +56,12 @@ const splashNavigator = createStackNavigator({
   },
   HeroDetailView: {
     screen: HeroDetailView,
+    navigationOptions: {
+      headerShown: true,
+    },
+  },
+  StepIndicatorView: {
+    screen: StepIndicatorView,
     navigationOptions: {
       headerShown: true,
     },
